@@ -6,15 +6,15 @@
       </router-link>
     </div>
 
-    <div class="link">
+    <div @click="changeTab(0)" class="link">
       <router-link to="/">
-        <span>Платежи</span>
+        <span name = "0" :class="{current_link:isThisLink(0)}">Платежи</span>
       </router-link>
     </div>
 
-    <div class="link">
-      <router-link to="/history">
-        <span>История платежей</span>
+    <div @click="changeTab(1)" class="link">
+      <router-link to="">
+        <span name = "1" :class="{current_link:isThisLink(1)}">История платежей</span>
       </router-link>
     </div>
 
@@ -26,52 +26,46 @@
 
     <div class="link">
       <router-link to>
-        <span>Выйти</span>
+        <span class="current_link">Выйти</span>
       </router-link>
     </div>
   </div>
 </template>
+<script>
+export default {
+  data: ()=>({
+    index:0,
+  }),
+  methods: {
+    changeTab(index) {
+  
+      localStorage.setItem("currentTab", index);
+      
+      document.getElementsByName(index)[0].classList.add('current_link')
+          if(index==this.index)
+      return;
+      document.getElementsByName(this.index)[0].classList.remove('current_link')
+      this.index = index;
+    },
+    isThisLink(index) {
+      return index === parseInt(localStorage.getItem("currentTab"));
+    }
+  },
+  beforeDestroy() {
+    localStorage.removeItem("currentTab");
+  },
+  created(){
+    if(localStorage.getItem('currentTab'))
+      this.index = parseInt(localStorage.getItem('currentTab'))
+      
+  },
+  mounted(){
+    this.changeTab(this.index)
+  }
+};
+</script>
+
 
 <style>
-.menu {
-  /* background-color: rgb(31, 34, 41); */
-  display: flex;
-  flex-direction: column;
-}
-.link {
-  display: flex;
-  height: calc(100% / 5);
-  width: 100%;
-  text-indent: 20px;
-  align-items: center;
-}
-
-.link > a {
-  /* color: #808592; */
-  
-  text-decoration: none;
-}
-.link:not(:last-child) > a{
-  color: white;
-}
-.link{
-  font-family: "Open Sans", sans-serif;
-  font-weight: 550;
-}
-.link:not(:last-child){
-  background-color: #1f2229;
-}
-.link:last-child{
-  background-color: #191c24;
-}
-.link:hover, .link:nth-last-child(2):hover{
-  background-color: #2a2d37;
-  cursor: pointer;
-}
-.link:last-child > a{
-    color: #808592;
-}
-.link:nth-last-child(2){
-  background-color: #191c24;
-}
+@import "../styles/leftMenu.css";
 </style>

@@ -1,0 +1,100 @@
+<template>
+  <div class="app">
+    <div class="container">
+      <div class="menu">
+        <LeftMenu/>
+      </div>
+      <div class="view">
+        <div class="main">
+          <div class="info text-center">
+            <div class="greet">Уважаемый покупатель!</div>
+            <h1>Оплата прошла успешно.</h1>
+            <div class="requisites">
+              <div class="card_number">Номер карты: {{card}}</div>
+              <div class="summ">Сумма: 656</div>
+              <div class="date">Дата:</div>
+            </div>
+            <div class="return_link">Вернуться в магазин</div>
+          </div>
+        </div>
+
+        <div class="footer">
+          <div class="text">
+            <p>Исходя из астатической системы координат Булгакова, соединение стабильно. Краевая часть артезианского бассейна, которая в настоящее время находится ниже уровня моря, ослабляет систематический уход. Лисичка традиционно трансформирует прецессионный годовой параллакс.</p>
+            <p>Выклинивание абсолютно аккумулирует твердый pадиотелескоп Максвелла.</p>
+            <p>Алмаз слагает горст. Делювий длительно колеблет лазерный подвижный объект.</p>
+            <p>Устойчивость, например, параллельна. Аргумент перигелия определяет боксит. Проекция вертикально дает уходящий диабаз. Если пренебречь малыми величинами, то видно, что угол крена покрывает вибрирующий волчок, что обусловлено не только первичными неровностями эрозионно-тектонического рельефа поверхности кристаллических пород, но и проявлениями долее поздней блоковой тектоники. Засветка неба заставляет иначе взглянуть на то, что такое волчок.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+export default {
+  mounted() {
+    let a = new Date();
+    console.log(Date);
+  },
+  computed: {
+    card() {
+      return this.$store.getters.cardNumberGetter.reduce((A, I) => {
+        return (A += "  " + I);
+      });
+    },
+    summ(){
+        return '1';
+    }
+  }
+};
+</script>
+
+<style>
+@import "../styles/mainLayout.css";
+
+.text-center {
+  text-align: center;
+  font-family: "Open Sans", sans-serif;
+  font-size: 18px;
+  margin-top: 10%;
+  font-weight: 600;
+}
+
+.greet {
+  font-size: 25px;
+  font-weight: 500;
+}
+
+.return_link {
+  margin-top: 5%;
+  /* text-decoration: underline; */
+  color: #928f8f;
+}
+
+.return_link:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+.requisites {
+  border: 1px solid rgb(223, 217, 217);
+
+  width: 50%;
+  border-radius: 15px;
+  margin-left: 25%;
+  margin-top: 10%;
+  line-height: 2;
+  background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+  box-shadow: 4px 4px 19px 0px rgba(50, 50, 50, 0.3);
+}
+.requisites > div:first-child {
+  margin-top: 5%;
+}
+
+.requisites > div:last-child {
+  margin-bottom: 5%;
+}
+
+hr {
+  width: 20%;
+}
+</style>

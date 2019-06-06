@@ -11,12 +11,22 @@
             <div class="payment_data_wrapper">
               <div class="payment_data">
                 <div class="payment_title">Номер счета:</div>
-                <div class="value">{{accountNumber}}</div>
+                <div
+                  @click.stop="falseAccountFlag"
+                  v-if="accountFlag"
+                  class="value"
+                >{{accountNumber}}</div>
+                <input v-model="accountNumber" v-else id="accountTurn" class="value">
               </div>
 
               <div class="payment_data">
                 <div class="payment_title">Сумма платежа:</div>
-                <div class="value">{{paymentAmount}} руб.</div>
+                <div
+                  @click.stop="falsePaymentFlag"
+                  v-if="paymentFlag"
+                  class="value"
+                >{{paymentAmount}} руб.</div>
+                <input v-model="paymentAmount" v-else id="paymentTurn" class="value">
               </div>
             </div>
           </div>
@@ -30,6 +40,7 @@
                   <input
                     v-for="(index) in 4"
                     :key="index"
+                    v-model="cardNumber[index-1]"
                     @input="validate"
                     @keyup.delete="deleteAndGoLeft"
                     @keydown.left="goLeft"
@@ -78,12 +89,10 @@
   </div>
 </template>
 <script>
-import LeftMenu from "../leftMenu/LeftMenu";
 import Date from "./DateInput";
-import { mapGetters, mapMutations } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
   components: {
-    LeftMenu,
     Date
   },
   data: () => ({
@@ -91,7 +100,9 @@ export default {
     paymentAmount: "100",
     name: "1",
     nameRegex: new RegExp("^[a-zA-Z]+$"),
-    cvvRegex: new RegExp("^[0-9]+$")
+    cvvRegex: new RegExp("^[0-9]+$"),
+    paymentFlag: true,
+    accountFlag: true
   }),
   computed: {
     ...mapGetters({
@@ -141,11 +152,39 @@ export default {
     }
   },
   methods: {
-    ...mapMutations({
+    ...mapActions({
       setNumber: "setCardNumber",
       setName: "setCardHolderName",
       setCvv: "setCvv"
     }),
+
+    falsePaymentFlag(event) {
+      this.paymentFlag = false;
+      this.accountFlag = true;
+      this.$nextTick(() => {
+        document.getElementById("paymentTurn").focus();
+      });
+    },
+
+    trueFlag(event) {
+      if (event.target.id === "paymentTurn") this.paymentFlag = false;
+      else this.paymentFlag = true;
+      if (event.target.id === "accountTurn") this.accountFlag = false;
+      else this.accountFlag = true;
+    },
+
+    falseAccountFlag() {
+      this.accountFlag = false;
+      this.paymentFlag = true;
+      this.$nextTick(() => {
+        document.getElementById("accountTurn").focus();
+      });
+    },
+
+    trueAccountFlag(event) {
+      if (event.target.id === "AccountTurn") this.accountFlag = false;
+      else this.accountFlag = true;
+    },
 
     /**
      * Basic validation method.
@@ -166,7 +205,9 @@ export default {
         this.holderName.length > 4,
         this.holderName
       );
-      return this.nameRegex.test(this.holderName && this.holderName.length > 4);
+      return (
+        this.nameRegex.test(this.holderName) && this.holderName.length >= 4
+      );
     },
 
     /**
@@ -224,7 +265,6 @@ export default {
       if (next) next.focus();
     },
 
-
     /**
      * Highlights with red all bad inputs
      */
@@ -256,6 +296,9 @@ export default {
       } else {
         nameInput.classList.remove("red_border");
       }
+      if (!(card || code || name)) {
+        this.$router.push("/success");
+      }
     },
 
     /**
@@ -273,8 +316,7 @@ export default {
       }
       while (value.length != 0) {
         let input = document.getElementsByName(name++)[0];
-        if(!input)
-        break;
+        if (!input) break;
         let tmp = value
           .split("")
           .splice(0, 4)
@@ -283,223 +325,21 @@ export default {
         input.value = tmp;
 
         this.cardNumber = {
-          index: name,
+          index: name - 1,
           value: tmp
         };
-        if (input.value.length == 4) this.goRight(name - 1);
+        if (input.value.length == 4) this.goRight(input.name);
       }
     }
   },
-  mounted() {}
+  mounted() {
+    window.addEventListener("click", this.trueFlag);
+  },
+  beforeDestroy() {
+    window.removeEventListener("click", this.trueFlag);
+  }
 };
 </script>
 <style>
-@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&display=swap");
-
-body {
-  background-color: black;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  margin: 0;
-}
-.send_button {
-  align-self: flex-start;
-  margin-top: 35px;
-  border-radius: 25px;
-  width: 130px;
-  height: 40px;
-  background-color: #0053b0;
-
-  color: white;
-  font-family: "Open Sans", sans-serif;
-  font-weight: 600;
-  margin-left: 26px;
-}
-.app {
-  width: 100%;
-  margin-top: 30px;
-}
-.container {
-  display: flex;
-  margin-left: auto;
-  margin-right: auto;
-  height: auto;
-  width: auto;
-  flex-direction: row;
-}
-.view {
-  width: 630px;
-  margin-top: 0;
-  height: 800px;
-}
-.menu {
-  width: 320px;
-  height: 280px;
-}
-.main {
-  width: 100%;
-  height: 70%;
-  background-color: rgb(247, 248, 248);
-  display: flex;
-  flex-direction: column;
-}
-.main > *:not(:last-child) {
-  margin-left: 20px;
-  padding-top: 35px;
-}
-.footer {
-  /* height: 30%; */
-  height: auto;
-  background: rgb(55, 60, 67);
-}
-.payment_data {
-  display: flex;
-  flex-direction: row;
-}
-.number_input {
-  display: flex;
-  flex-direction: row;
-}
-.number_input > input {
-  width: 55px;
-  height: 30px;
-  border: 2px solid #e4e9ee;
-  margin-top: 5px;
-}
-.card_holder_name {
-  margin-top: 5px;
-}
-.cvv_input {
-  float: right;
-  width: 55px;
-  display: flex;
-  flex-direction: row;
-  width: 132px;
-  height: 43px;
-  align-items: center;
-  background-color: white;
-  margin-right: 7px;
-  justify-content: space-between;
-}
-.red_border {
-  border: 2px solid rgb(218, 76, 76) !important;
-}
-.cvv_input > input {
-  font-size: 50px;
-}
-
-.number_input > input {
-  font-size: 20px;
-}
-.cvv_input > img {
-  max-height: 30px;
-  margin-right: 7px;
-}
-
-.cvv > .payment_title {
-  width: auto;
-}
-.cvv {
-  display: flex;
-  flex-direction: column;
-  float: right;
-  margin-top: 20px;
-  margin-right: 5px;
-}
-.cvv_input > input {
-  border: none;
-  width: 70%;
-  height: 95%;
-}
-.cvv_input > input:focus {
-  outline: none;
-}
-.card_holder_name > input {
-  border: 2px solid #e4e9ee;
-  margin-top: 10px;
-  height: 37px;
-  width: 90%;
-}
-.card_holder_name > input::placeholder {
-  font-size: 16px;
-  color: rgb(128, 135, 147);
-  opacity: 0.5;
-  text-indent: 10px;
-}
-
-.card_inner > .payment_title {
-  margin-top: 20px;
-}
-.number_input > input:not(:last-child) {
-  margin-right: 3%;
-}
-.text {
-  padding: 5px;
-  /* padding-bottom: 0; */
-  font-size: 12px;
-  padding-left: 15px;
-  font-family: Arial, Helvetica, sans-serif;
-  color: rgb(124, 130, 141);
-  line-height: 1.4;
-}
-.payment_title {
-  color: #8494ab;
-  width: 170px;
-}
-.title {
-  width: 250px;
-}
-.data {
-  font-family: "Open Sans", sans-serif;
-  font-weight: 600;
-  font-size: 17pt;
-}
-.info,
-.value {
-  font-size: 16px;
-  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
-}
-.payment_data_wrapper {
-  margin-top: 30px;
-}
-
-.card,
-.right_card {
-  margin-top: 10px;
-  height: 230px;
-  width: 325px;
-  padding-top: 0;
-  border: 2px solid #e4e9ee;
-
-  border-radius: 10px;
-  background-color: rgb(247, 248, 248);
-  z-index: 1;
-  position: relative;
-}
-.card {
-  float: left;
-}
-.right_card {
-  position: absolute;
-  background-color: rgb(247, 248, 248);
-  z-index: 0;
-  margin-left: 200px;
-  margin-top: 33px;
-}
-.card_inner {
-  margin-left: 10px;
-}
-.magnet_line {
-  background-color: rgb(228, 233, 238);
-  width: 100%;
-  height: 40px;
-  margin-top: 20px;
-}
-button,
-button:active,
-button:focus {
-  outline: none;
-}
+@import "../styles/mainLayout.css";
 </style>
