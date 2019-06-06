@@ -27,15 +27,27 @@
               <div class="card_inner">
                 <div class="payment_title">Номер карты</div>
                 <div class="number_input">
-                  <input @input="validate" name="0" type="text" class="number_input_box">
-                  <input @input="validate" name="1" type="text" class="number_input_box">
-                  <input @input="validate" name="2" type="text" class="number_input_box">
-                  <input @input="validate" name="3" type="text" class="number_input_box">
+                  <input
+                    v-for="(index) in 4"
+                    :key="index"
+                    @input="validate"
+                    @keyup.delete="deleteAndGoLeft"
+                    @keydown.left="goLeft"
+                    @keydown.right="goRight($event.target.name)"
+                    :name="index-1"
+                    type="text"
+                    class="number_input_box"
+                  >
                 </div>
                 <div class="payment_title">Срок действия</div>
                 <Date/>
                 <div class="card_holder_name">
-                  <input type="text" :model="name" placeholder="Держатель карты">
+                  <input
+                    v-model="holderName"
+                    type="text"
+                    class="card_holder_name_input"
+                    placeholder="Держатель карты"
+                  >
                 </div>
               </div>
             </div>
@@ -44,13 +56,13 @@
               <div class="cvv">
                 <div class="payment_title">Код CVV2 / CVC2</div>
                 <div class="cvv_input">
-                  <input type="password">
+                  <input v-model="cvvCode" type="password">
                   <img src="../../img/quest.png" alt>
                 </div>
               </div>
             </div>
           </div>
-          <button class="send_button">Оплатить</button>
+          <button @click="highlightErrors" class="send_button">Оплатить</button>
         </div>
 
         <div class="footer">
@@ -77,13 +89,15 @@ export default {
   data: () => ({
     accountNumber: "87123658716587",
     paymentAmount: "100",
-    name: "1"
+    name: "1",
+    nameRegex: new RegExp("^[a-zA-Z]+$"),
+    cvvRegex: new RegExp("^[0-9]+$")
   }),
   computed: {
     ...mapGetters({
       cardGetter: "cardNumberGetter",
       nameGetter: "cardHolderNameGetter",
-      cvvGetter: ""
+      cvvGetter: "cvvGetter"
     }),
 
     /**
@@ -100,7 +114,6 @@ export default {
       }
     },
 
-
     /**
      * Returns name of a card holder
      * @type {String}
@@ -114,14 +127,13 @@ export default {
       }
     },
 
-
     /**
      * Filed for cvv code
      * @type {Integer}
      */
-    cvv: {
+    cvvCode: {
       get() {
-        return cvvGetter;
+        return this.cvvGetter;
       },
       set(newValue) {
         this.setCvv(newValue);
@@ -144,43 +156,141 @@ export default {
       return 1;
     },
 
-
     /**
      * Validates name of a card holder
      * @returns {Boolean} returns true, if name is valid
      */
     isNameValid() {
-      const re1 = new RegExp();
+      console.log(
+        this.nameRegex.test(this.holderName),
+        this.holderName.length > 4,
+        this.holderName
+      );
+      return this.nameRegex.test(this.holderName && this.holderName.length > 4);
     },
 
+    /**
+     * Validates cvv code
+     * @returns {Boolean} returns true if code is valid
+     */
+    isCodeVaild() {
+      if (!this.cvvCode) return false;
+      let x = parseInt(this.cvvCode);
+      return x && x >= 100 && x <= 999;
+    },
 
     /**
      * Validates card code fields
      * @returns {Boolean} returns true if all card code fields are valid
      */
     isCardValid() {
-      !!this.cardNumber.reduce((A, value) => {
+      return !!this.cardNumber.reduce((A, value) => {
         return (A *=
           value.length == 4 && parseInt(value) && parseInt(value) >= 0);
       });
     },
+    /**
+     * Event handler.
+     * Fires on backspace and goes left if there are no numbers
+     */
+    deleteAndGoLeft(event) {
+      if ((event.target.value + "").length == 0) this.goLeft();
+    },
+    /**
+     * Event handler. Fires on left arrow
+     * Moves focus to left input
+     */
+    goLeft() {
+      let currNum = parseInt(event.target.name);
+      let cur = document.getElementsByName(currNum)[0];
+      if (cur.selectionStart != 0) return;
+      let nextNum = currNum - 1;
+      let next = document.getElementsByName(nextNum)[0];
+      if (next) {
+        next.focus();
+      }
+    },
+
+    /**
+     * Event handler. Fires on right arrow
+     * Moves focus to right input
+     */
+    goRight(name) {
+      let currNum = parseInt(name);
+      let cur = document.getElementsByName(currNum)[0];
+      if (cur.selectionStart != cur.value.length) return;
+      let nextNum = currNum + 1;
+      let next = document.getElementsByName(nextNum)[0];
+      if (next) next.focus();
+    },
 
 
     /**
-     * Validates all card fields 
+     * Highlights with red all bad inputs
+     */
+    highlightErrors() {
+      let card = !this.isCardValid(),
+        code = !this.isCodeVaild(),
+        name = !this.isNameValid();
+      let inputs = document.getElementsByClassName("number_input_box");
+      let cvvInput = document.getElementsByClassName("cvv_input")[0];
+      let nameInput = document.getElementsByClassName(
+        "card_holder_name_input"
+      )[0];
+      if (card) {
+        for (let i of inputs) {
+          i.classList.add("red_border");
+        }
+      } else {
+        for (let i of inputs) {
+          i.classList.remove("red_border");
+        }
+      }
+      if (code) {
+        cvvInput.classList.add("red_border");
+      } else {
+        cvvInput.classList.remove("red_border");
+      }
+      if (name) {
+        nameInput.classList.add("red_border");
+      } else {
+        nameInput.classList.remove("red_border");
+      }
+    },
+
+    /**
+     * Validates all card fields
      * @param {event}
      * @returns {Boolean} return true if all fields are valid
      */
     validate(event) {
-      this.cardNumber = {
-        index: event.target.name,
-        value: event.target.value
-      };
-      console.log(this.isValid());
+      let value = event.target.value;
+      let name = event.target.name;
+      value = value.replace(/\s/g, "");
+      if (!parseInt(value)) {
+        event.target.value = "";
+        return;
+      }
+      while (value.length != 0) {
+        let input = document.getElementsByName(name++)[0];
+        if(!input)
+        break;
+        let tmp = value
+          .split("")
+          .splice(0, 4)
+          .join("");
+        value = value.substring(4);
+        input.value = tmp;
+
+        this.cardNumber = {
+          index: name,
+          value: tmp
+        };
+        if (input.value.length == 4) this.goRight(name - 1);
+      }
     }
-
-
-  }
+  },
+  mounted() {}
 };
 </script>
 <style>
@@ -201,6 +311,7 @@ body {
   width: 130px;
   height: 40px;
   background-color: #0053b0;
+
   color: white;
   font-family: "Open Sans", sans-serif;
   font-weight: 600;
@@ -272,11 +383,16 @@ body {
   margin-right: 7px;
   justify-content: space-between;
 }
-
+.red_border {
+  border: 2px solid rgb(218, 76, 76) !important;
+}
 .cvv_input > input {
   font-size: 50px;
 }
 
+.number_input > input {
+  font-size: 20px;
+}
 .cvv_input > img {
   max-height: 30px;
   margin-right: 7px;
@@ -380,5 +496,10 @@ body {
   width: 100%;
   height: 40px;
   margin-top: 20px;
+}
+button,
+button:active,
+button:focus {
+  outline: none;
 }
 </style>
