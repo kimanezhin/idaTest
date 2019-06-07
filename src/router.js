@@ -6,12 +6,14 @@ import { getFlag } from './store/modules/validation'
 Vue.use(Router)
 
 const ifNotPayment = (to, from, next) => {
-  
-  if(getFlag())
-    next('/success')
+
+  if (getFlag()) {
+    next()
+    return;
+  }
   else
     next('/')
-    return;
+
 }
 
 export default new Router({
@@ -31,7 +33,7 @@ export default new Router({
     {
       path: '/history',
       name: 'history',
-      
+
       component: () => import(/* webpackChunkName: "about" */ './history/History.vue')
     }
   ]

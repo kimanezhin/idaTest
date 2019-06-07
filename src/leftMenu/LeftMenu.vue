@@ -6,15 +6,15 @@
       </router-link>
     </div>
 
-    <div @click="changeTab(0)" class="link">
+    <div @click="changeTab('link0')" class="link">
       <router-link to="/">
-        <span name = "0" :class="{current_link:isThisLink(0)}">Платежи</span>
+        <span name = "link0" :class="{current_link:isThisLink(0)}">Платежи</span>
       </router-link>
     </div>
 
-    <div @click="changeTab(1)" class="link">
+    <div @click="changeTab('link1')" class="link">
       <router-link to="">
-        <span name = "1" :class="{current_link:isThisLink(1)}">История платежей</span>
+        <span name = "link1" :class="{current_link:isThisLink(1)}">История платежей</span>
       </router-link>
     </div>
 
@@ -34,7 +34,7 @@
 <script>
 export default {
   data: ()=>({
-    index:0,
+    index:"link0",
   }),
   methods: {
     changeTab(index) {
@@ -42,13 +42,13 @@ export default {
       localStorage.setItem("currentTab", index);
       
       document.getElementsByName(index)[0].classList.add('current_link')
-          if(index==this.index)
+          if(index===this.index)
       return;
       document.getElementsByName(this.index)[0].classList.remove('current_link')
       this.index = index;
     },
     isThisLink(index) {
-      return index === parseInt(localStorage.getItem("currentTab"));
+      return index === (localStorage.getItem("currentTab"));
     }
   },
   beforeDestroy() {
@@ -56,7 +56,7 @@ export default {
   },
   created(){
     if(localStorage.getItem('currentTab'))
-      this.index = parseInt(localStorage.getItem('currentTab'))
+      this.index = (localStorage.getItem('currentTab'))
       
   },
   mounted(){

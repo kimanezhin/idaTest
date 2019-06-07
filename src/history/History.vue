@@ -24,7 +24,10 @@
 
 <script>
 export default {
-  computed: {}
+  computed: {},
+  mounted() {
+     
+  },
 };
 </script>
 

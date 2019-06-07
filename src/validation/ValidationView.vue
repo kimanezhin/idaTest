@@ -41,6 +41,7 @@
                     v-for="(index) in 4"
                     :key="index"
                     v-model="cardNumber[index-1]"
+                    @focus="changeInput"
                     @input="validate"
                     @keyup.delete="deleteAndGoLeft"
                     @keydown.left="goLeft"
@@ -102,7 +103,8 @@ export default {
     nameRegex: new RegExp("^[a-zA-Z]+$"),
     cvvRegex: new RegExp("^[0-9]+$"),
     paymentFlag: true,
-    accountFlag: true
+    accountFlag: true,
+    currentInput: 1
   }),
   computed: {
     ...mapGetters({
@@ -118,9 +120,11 @@ export default {
      */
     cardNumber: {
       get() {
+        console.log(this.cardGetter);
         return this.cardGetter;
       },
       set(newValue) {
+        console.log(newValue);
         this.setNumber(newValue);
       }
     },
@@ -134,6 +138,7 @@ export default {
         return this.nameGetter;
       },
       set(newValue) {
+        console.log(newValue);
         this.setName(newValue);
       }
     },
@@ -158,6 +163,9 @@ export default {
       setCvv: "setCvv"
     }),
 
+    changeInput(event) {
+      this.currentInput = event.target.name;
+    },
     falsePaymentFlag(event) {
       this.paymentFlag = false;
       this.accountFlag = true;
@@ -243,6 +251,7 @@ export default {
      */
     goLeft() {
       let currNum = parseInt(event.target.name);
+
       let cur = document.getElementsByName(currNum)[0];
       if (cur.selectionStart != 0) return;
       let nextNum = currNum - 1;
@@ -297,7 +306,14 @@ export default {
         nameInput.classList.remove("red_border");
       }
       if (!(card || code || name)) {
-        this.$router.push("/success");
+        this.$store
+          .dispatch("sendForm")
+          .then(() => {
+            this.$router.push('/success')
+          })
+          .catch(() => {
+            console.log("Smth went wrong");
+          });
       }
     },
 
@@ -307,6 +323,7 @@ export default {
      * @returns {Boolean} return true if all fields are valid
      */
     validate(event) {
+      console.log("a");
       let value = event.target.value;
       let name = event.target.name;
       value = value.replace(/\s/g, "");
@@ -328,6 +345,7 @@ export default {
           index: name - 1,
           value: tmp
         };
+
         if (input.value.length == 4) this.goRight(input.name);
       }
     }
