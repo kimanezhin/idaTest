@@ -119,7 +119,6 @@ const actions = {
             date: context.state.date
         }
         return new Promise((resolve, reject) => {
-
             context.state.paymentsArray.push(obj)
             context.state.isFormSend = true;
             reject(); // Try to set here reject();

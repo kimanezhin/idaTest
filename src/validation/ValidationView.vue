@@ -37,7 +37,6 @@
                     v-for="(index) in 4"
                     :key="index"
                     v-model="cardNumber[index-1]"
-                    @focus="changeInput"
                     @input="validate"
                     @keyup.delete="deleteAndGoLeft"
                     @keydown.left="goLeft"
@@ -126,7 +125,10 @@ export default {
         this.setNumber(newValue);
       }
     },
-
+    /**
+     * Return number of account to which send
+     * @type {String}
+     */
     accountNumber: {
       get() {
         return this.getAccountNumber;
@@ -136,6 +138,10 @@ export default {
       }
     },
 
+    /**
+     * Returns summ of current transaction
+     * @type {Number}
+     */
     summ: {
       get() {
         return this.summGetter;
@@ -161,7 +167,7 @@ export default {
 
     /**
      * Field for cvv code
-     * @type {Integer}
+     * @type {Number}
      */
     cvvCode: {
       get() {
@@ -181,9 +187,9 @@ export default {
       setAccuountNumber: "setAccuountNumber"
     }),
 
-    changeInput(event) {
-      this.currentInput = event.target.name;
-    },
+    /**
+     * Sets payment flag to false
+     */
     falsePaymentFlag(event) {
       this.paymentFlag = false;
       this.accountFlag = true;
@@ -192,6 +198,9 @@ export default {
       });
     },
 
+    /**
+     * Sets payment flag or account flag to true;
+     */
     trueFlag(event) {
       if (event.target.id === "paymentTurn") this.paymentFlag = false;
       else this.paymentFlag = true;
@@ -199,6 +208,10 @@ export default {
       else this.accountFlag = true;
     },
 
+
+    /**
+     * Sets account flag to false
+     */
     falseAccountFlag() {
       this.accountFlag = false;
       this.paymentFlag = true;
@@ -206,21 +219,6 @@ export default {
         document.getElementById("accountTurn").focus();
       });
     },
-
-    trueAccountFlag(event) {
-      if (event.target.id === "AccountTurn") this.accountFlag = false;
-      else this.accountFlag = true;
-    },
-
-    /**
-     * Basic validation method.
-     * Combines validation methods for all fields.
-     * @returns {Boolean} returns true if all fields are valid
-     */
-    isValid(context) {
-      return 1;
-    },
-
     /**
      * Validates name of a card holder
      * @returns {Boolean} returns true, if name is valid
@@ -368,6 +366,10 @@ export default {
         if (input.value.length == 4) this.goRight(input.name);
       }
     },
+
+    /**
+     * Shows alert box in case of a bad transaction
+     */
     showAlert() {
       document.getElementsByClassName("alertMessage")[0].classList.add(
         "alertMessageDown"
@@ -382,9 +384,6 @@ export default {
   },
   mounted() {
     window.addEventListener("click", this.trueFlag);
-    setTimeout(() =>{
-      this.showAlert();
-    },500)
   },
   beforeDestroy() {
     window.removeEventListener("click", this.trueFlag);

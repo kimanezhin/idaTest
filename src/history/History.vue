@@ -85,6 +85,9 @@ export default {
   padding: 0 !important;
 }
 
+.table_header > .history_block{
+  border-bottom: none;
+}
 .table_header > .history_block {
   height: 100%;
 }
