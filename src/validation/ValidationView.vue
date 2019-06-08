@@ -73,6 +73,9 @@
           <button @click="highlightErrors" class="send_button">Оплатить</button>
         </div>
 
+        <div class="alertMessage">
+          <div class="text">Произошла ошибка! Попробуйте еще раз.</div>
+        </div>
         <div class="footer">
           <div class="text">
             <p>Исходя из астатической системы координат Булгакова, соединение стабильно. Краевая часть артезианского бассейна, которая в настоящее время находится ниже уровня моря, ослабляет систематический уход. Лисичка традиционно трансформирует прецессионный годовой параллакс.</p>
@@ -327,6 +330,7 @@ export default {
             this.$router.push("/success");
           })
           .catch(() => {
+            this.showAlert();
             console.log("Smth went wrong");
           });
       }
@@ -363,6 +367,17 @@ export default {
 
         if (input.value.length == 4) this.goRight(input.name);
       }
+    },
+    showAlert() {
+      document.getElementsByClassName("alertMessage")[0].classList.add(
+        "alertMessageDown"
+      );
+
+      setTimeout(() => {
+        document
+          .getElementsByClassName("alertMessage")[0]
+          .classList.remove("alertMessageDown");
+      }, 3000);
     }
   },
   mounted() {

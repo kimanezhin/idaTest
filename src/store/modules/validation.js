@@ -7,7 +7,9 @@ const state = {
     cardHolderName: '',
     cvv: '',
     isFormSend: false,
-    paymentsArray: [{
+    paymentsArray: 
+    // [], // Array with no data
+    [{ // Array with mock data
         account: '1234 5678 9102 5234',
         summ: '123',
         date: '12.01.2018'
@@ -74,6 +76,14 @@ const mutations = {
             + (payload.getMonth() + 1) + "."
             + payload.getFullYear()
         context.date = formatted_date;
+    },
+    clearData(){
+        context.cardArray = ['', '', '', '',]
+        context.cardHolderName = ''
+        context.cvv = '',
+        context.isFormSend = false,
+        context.summ = 100,
+        context.accountNumber = '1123341123'
     }
 
 }
@@ -112,8 +122,11 @@ const actions = {
 
             context.state.paymentsArray.push(obj)
             context.state.isFormSend = true;
-            resolve();
+            reject(); // Try to set here reject();
         })
+    },
+    clearData(context){
+        context.commit('clearData')
     }
 
 }

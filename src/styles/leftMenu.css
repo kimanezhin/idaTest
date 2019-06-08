@@ -120,7 +120,7 @@ a {
 
 .hidden-menu-ticker:checked~.btn-menu {
   left: 260px;
-  background-color: #2b343c;
+  /* background-color: #2b343c; */
   position: fixed;
 }
 

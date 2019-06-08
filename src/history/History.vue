@@ -14,11 +14,15 @@
               <div class="summ">Сумма оплаты</div>
             </div>
           </div>
-          <div v-for="(payment, index) in payments" :key="index" class="history_block">
+            <div v-if="paymentsEmpty" class="no_payments">
+            История переводов пуста.
+          </div>
+          <div v-else v-for="(payment, index) in payments" :key="index" class="history_block">
             <div class="date">{{payment.date}}</div>
             <div class="accountNumber">{{payment.account}}</div>
             <div class="summ">{{payment.summ}} руб.</div>
           </div>
+
         </div>
 
         <div class="footer">
@@ -39,6 +43,9 @@ export default {
   computed: {
     payments() {
       return this.$store.getters.getPayments;
+    },
+    paymentsEmpty(){
+      return this.payments.length == 0
     }
   },
   mounted() {}
@@ -48,12 +55,21 @@ export default {
 <style scoped>
 @import "../styles/mainLayout.css";
 
+.no_payments{
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 50px;
+  font-weight: 600;
+  font-family: "Open Sans", sans-serif;
+}
+
 .table_header {
   background-color: rgb(33, 46, 58);
   height: 50px;
   color: white;
   font-size: 17px;
   font-weight: 600;
+  padding-top: 35px;
   font-family: "Open Sans", sans-serif;
 }
 .history_block,

@@ -35,10 +35,6 @@
 </template>
 <script>
 export default {
-  mounted() {
-    let a = new Date();
-    console.log(Date);
-  },
   computed: {
     card() {
       return this.$store.getters.cardNumberGetter.reduce((A, I) => {
@@ -57,6 +53,9 @@ export default {
     getName(){
       return this.$store.getters.cardHolderNameGetter;
     }
+  },
+  beforeDestroy(){
+    this.$store.dispatch('clearData');
   }
 };
 </script>
