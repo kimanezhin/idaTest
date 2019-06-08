@@ -1,71 +1,83 @@
 <template>
   <div class="menu">
     <div class="link">
-      <router-link to>
-        <span>Личный кабинет</span>
-      </router-link>
+      <span>Личный кабинет</span>
     </div>
 
     <div @click="changeTab('link0')" class="link">
-      <router-link to="/">
-        <span name = "link0" :class="{current_link:isThisLink(0)}">Платежи</span>
-      </router-link>
+      <span name="link0" :class="{current_link:isThisLink(0)}">Платежи</span>
     </div>
 
     <div @click="changeTab('link1')" class="link">
-      <router-link to="">
-        <span name = "link1" :class="{current_link:isThisLink(1)}">История платежей</span>
-      </router-link>
+      <span name="link1" :class="{current_link:isThisLink(1)}">История платежей</span>
     </div>
 
     <div class="link">
-      <router-link to>
-        <span>Настройки</span>
-      </router-link>
+      <span>Настройки</span>
     </div>
 
     <div class="link">
-      <router-link to>
-        <span class="current_link">Выйти</span>
-      </router-link>
+      <span class="current_link">Выйти</span>
     </div>
   </div>
 </template>
 <script>
 export default {
-  data: ()=>({
-    index:"link0",
+  data: () => ({
+    index: "link0"
   }),
   methods: {
     changeTab(index) {
-  
+      console.log(index);
       localStorage.setItem("currentTab", index);
-      
-      document.getElementsByName(index)[0].classList.add('current_link')
-          if(index===this.index)
-      return;
-      document.getElementsByName(this.index)[0].classList.remove('current_link')
+
+      document.getElementsByName(index)[0].classList.add("current_link");
+      if (index === this.index) return;
+      document
+        .getElementsByName(this.index)[0]
+        .classList.remove("current_link");
       this.index = index;
+      switch (index) {
+        case "link0": {
+          this.$router.push("/");
+          break;
+        }
+        case "link1": {
+          this.$router.push("/history");
+          break;
+        }
+      }
     },
     isThisLink(index) {
-      return index === (localStorage.getItem("currentTab"));
+      return index === localStorage.getItem("currentTab");
     }
   },
   beforeDestroy() {
     localStorage.removeItem("currentTab");
   },
-  created(){
-    if(localStorage.getItem('currentTab'))
-      this.index = (localStorage.getItem('currentTab'))
-      
+  created() {
+    if (localStorage.getItem("currentTab"))
+      this.index = localStorage.getItem("currentTab");
   },
-  mounted(){
-    this.changeTab(this.index)
+  mounted() {
+    this.changeTab(this.index);
   }
 };
 </script>
 
 
 <style>
+a {
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width:1000px) {
+  .menu{
+    display: none;
+  }
+}
+
+
 @import "../styles/leftMenu.css";
 </style>

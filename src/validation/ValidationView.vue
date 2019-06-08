@@ -21,11 +21,7 @@
 
               <div class="payment_data">
                 <div class="payment_title">Сумма платежа:</div>
-                <div
-                  @click.stop="falsePaymentFlag"
-                  v-if="paymentFlag"
-                  class="value"
-                >{{paymentAmount}} руб.</div>
+                <div @click.stop="falsePaymentFlag" v-if="paymentFlag" class="value">{{summ}} руб.</div>
                 <input v-model="paymentAmount" v-else id="paymentTurn" class="value">
               </div>
             </div>
@@ -97,8 +93,6 @@ export default {
     Date
   },
   data: () => ({
-    accountNumber: "87123658716587",
-    paymentAmount: "100",
     name: "1",
     nameRegex: new RegExp("^[a-zA-Z]+$"),
     cvvRegex: new RegExp("^[0-9]+$"),
@@ -110,7 +104,9 @@ export default {
     ...mapGetters({
       cardGetter: "cardNumberGetter",
       nameGetter: "cardHolderNameGetter",
-      cvvGetter: "cvvGetter"
+      cvvGetter: "cvvGetter",
+      summGetter: "getSumm",
+      getAccountNumber: "getAccountNumber"
     }),
 
     /**
@@ -124,8 +120,25 @@ export default {
         return this.cardGetter;
       },
       set(newValue) {
-        console.log(newValue);
         this.setNumber(newValue);
+      }
+    },
+
+    accountNumber: {
+      get() {
+        return this.getAccountNumber;
+      },
+      set() {
+        this.setAccuountNumber(newValue);
+      }
+    },
+
+    summ: {
+      get() {
+        return this.summGetter;
+      },
+      set(newValue) {
+        this.setSumm(newValue);
       }
     },
 
@@ -144,7 +157,7 @@ export default {
     },
 
     /**
-     * Filed for cvv code
+     * Field for cvv code
      * @type {Integer}
      */
     cvvCode: {
@@ -160,7 +173,9 @@ export default {
     ...mapActions({
       setNumber: "setCardNumber",
       setName: "setCardHolderName",
-      setCvv: "setCvv"
+      setCvv: "setCvv",
+      setSumm: "setSumm",
+      setAccuountNumber: "setAccuountNumber"
     }),
 
     changeInput(event) {
@@ -309,7 +324,7 @@ export default {
         this.$store
           .dispatch("sendForm")
           .then(() => {
-            this.$router.push('/success')
+            this.$router.push("/success");
           })
           .catch(() => {
             console.log("Smth went wrong");

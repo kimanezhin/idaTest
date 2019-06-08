@@ -1,4 +1,5 @@
 <template>
+
   <div class="app">
     <div class="container">
       <div class="menu">
@@ -11,8 +12,9 @@
             <h1>Оплата прошла успешно.</h1>
             <div class="requisites">
               <div class="card_number">Номер карты: {{card}}</div>
-              <div class="summ">Сумма: 656</div>
-              <div class="date">Дата:</div>
+              <div class="name">Имя: {{getName}}:</div>
+              <div class="summ">Сумма: {{summ}} руб.</div>
+              <div class="date">Дата: {{getDate}}</div>
             </div>
             <div class="return_link">Вернуться в магазин</div>
           </div>
@@ -29,6 +31,7 @@
       </div>
     </div>
   </div>
+  
 </template>
 <script>
 export default {
@@ -42,8 +45,17 @@ export default {
         return (A += "  " + I);
       });
     },
-    summ(){
-        return '1';
+    summ() {
+      return this.$store.getters.getSumm;
+    },
+    account() {
+      return this.$store.getters.getAccountNumber;
+    },
+    getDate() {
+      return this.$store.getters.getDate;
+    },
+    getName(){
+      return this.$store.getters.cardHolderNameGetter;
     }
   }
 };

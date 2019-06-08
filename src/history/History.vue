@@ -6,7 +6,19 @@
       </div>
       <div class="view">
         <div class="main">
-          <div class="history_block"></div>
+          <div class="table_header">
+            <div class="history_block">
+              <div class="date">Дата</div>
+              <div class="accountNumber">Номер счета</div>
+
+              <div class="summ">Сумма оплаты</div>
+            </div>
+          </div>
+          <div v-for="(payment, index) in payments" :key="index" class="history_block">
+            <div class="date">{{payment.date}}</div>
+            <div class="accountNumber">{{payment.account}}</div>
+            <div class="summ">{{payment.summ}} руб.</div>
+          </div>
         </div>
 
         <div class="footer">
@@ -24,25 +36,55 @@
 
 <script>
 export default {
-  computed: {},
-  mounted() {
-     
+  computed: {
+    payments() {
+      return this.$store.getters.getPayments;
+    }
   },
+  mounted() {}
 };
 </script>
 
-<style>
+<style scoped>
 @import "../styles/mainLayout.css";
+
+.table_header {
+  background-color: rgb(33, 46, 58);
+  height: 50px;
+  color: white;
+  font-size: 17px;
+  font-weight: 600;
+  font-family: "Open Sans", sans-serif;
+}
+.history_block,
+.table_header {
+  margin-left: 0 !important;
+}
+
 .history_block {
-  width: 94%;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  border-bottom: 1px solid rgb(33, 46, 58);
+  padding: 0 !important;
+}
+
+.table_header > .history_block {
+  height: 100%;
+}
+.date,
+.accountNumber,
+.summ {
+  width: calc(100% / 3);
+  text-align: center;
+}
+.history_block {
+  width: 100%;
   height: 10%;
-  margin-left: 3%;
-  margin-right: 3%;
-  margin-top: 3%;
-  border-radius: 5px;
-  border: 1px solid rgb(223, 217, 217);
-  background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
-  box-shadow: 4px 4px 19px 0px rgba(50, 50, 50, 0.3);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
 }
 </style>
 

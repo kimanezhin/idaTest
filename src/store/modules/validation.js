@@ -1,8 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { resolve } from 'url';
-import { reject } from 'q';
-
 Vue.use(Vuex)
 
 const state = {
@@ -10,8 +7,19 @@ const state = {
     cardHolderName: '',
     cvv: '',
     isFormSend: false,
-    paymentsArray: [],
-    summ: 0
+    paymentsArray: [{
+        account: '1234 5678 9102 5234',
+        summ: '123',
+        date: '12.01.2018'
+    },
+    {
+        account: '1345 0943 4662 2462',
+        summ: '567',
+        date: '10.11.2008'
+    }],
+    summ: 100,
+    accountNumber: '1123341123',
+    date: ''
 }
 
 const getters = {
@@ -35,6 +43,12 @@ const getters = {
     },
     getSumm: (state) => {
         return state.summ;
+    },
+    getAccountNumber: (state) => {
+        return state.accountNumber
+    },
+    getDate: (state) => {
+        return state.date;
     }
 }
 const mutations = {
@@ -50,6 +64,16 @@ const mutations = {
     },
     setSumm(context, payload) {
         context.summ = payload;
+    },
+    setAccountNumber(context, payload) {
+        context.accountNumber = payload;
+    },
+    setDate(context, payload) {
+
+        let formatted_date = payload.getDate() + "."
+            + (payload.getMonth() + 1) + "."
+            + payload.getFullYear()
+        context.date = formatted_date;
     }
 
 }
@@ -70,17 +94,22 @@ const actions = {
         context.commit('setSumm', payload);
     },
 
+    setAccountNumber(context, payload) {
+        context.commit('setAccountNumber', payload)
+    },
 
     sendForm(context, payload) {
-
-        // console.log(context)
+        let date = new Date();
+        context.commit('setDate', date);
         let obj = {
             account: context.state.cardArray.reduce((A, I) => {
                 return A += " " + I;
             }),
-            summ: context.state.summ
+            summ: context.state.summ,
+            date: context.state.date
         }
         return new Promise((resolve, reject) => {
+
             context.state.paymentsArray.push(obj)
             context.state.isFormSend = true;
             resolve();

@@ -15,12 +15,12 @@
   align-items: center;
 }
 
-.link > a {
+.link > span {
   /* color: #808592; */
   
   text-decoration: none;
 }
-.link:not(:last-child) > a{
+.link:not(:last-child) > span{
   color: white;
 }
 .link{
@@ -37,7 +37,7 @@
   background-color: #2a2d37;
   cursor: pointer;
 }
-.link:last-child > a{
+.link:last-child > span{
     color: #808592;
 }
 .link:nth-last-child(2){
