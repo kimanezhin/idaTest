@@ -382,6 +382,9 @@ export default {
   },
   mounted() {
     window.addEventListener("click", this.trueFlag);
+    setTimeout(() =>{
+      this.showAlert();
+    },500)
   },
   beforeDestroy() {
     window.removeEventListener("click", this.trueFlag);

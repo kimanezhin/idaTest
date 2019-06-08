@@ -13,8 +13,9 @@ body {
 
 .alertMessage{
   position: fixed;
-  top: -100px;
-  left: calc(50%-150px);
+  top: 50px;
+  left: -310px;
+  
   height: 100px;
   width: 300px;
   background-image: radial-gradient( circle 770.6px at 10% 20%,  rgba(246,71,71,1) 0%, rgba(189,35,35,1) 74.9% );
@@ -28,7 +29,7 @@ body {
 }
 
 .alertMessageDown{
-  transform: translateY(140px);
+  transform: translateX(320px);
   transition: all .7s ease;
   
 }
