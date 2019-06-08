@@ -1,12 +1,13 @@
-
 .menu {
   /* background-color: rgb(31, 34, 41); */
   display: flex;
   flex-direction: column;
 }
-.current_link{
+
+.current_link {
   color: #7b808d !important;
 }
+
 .link {
   display: flex;
   height: calc(100% / 5);
@@ -15,32 +16,162 @@
   align-items: center;
 }
 
-.link > span {
+.link>span {
   /* color: #808592; */
-  
   text-decoration: none;
 }
-.link:not(:last-child) > span{
+
+.link:not(:last-child)>span {
   color: white;
 }
-.link{
+
+.link {
   font-family: "Open Sans", sans-serif;
   font-weight: 550;
 }
-.link:not(:last-child){
+
+.link:not(:last-child) {
   background-color: #1f2229;
 }
-.link:last-child{
-  background-color: #191c24;
-}
-.link:hover, .link:nth-last-child(2):hover{
-  background-color: #2a2d37;
-  cursor: pointer;
-}
-.link:last-child > span{
-    color: #808592;
-}
-.link:nth-last-child(2){
+
+.link:last-child {
   background-color: #191c24;
 }
 
+.link:hover, .link:nth-last-child(2):hover {
+  background-color: #2a2d37;
+  cursor: pointer;
+}
+
+.link:last-child>span {
+  color: #808592;
+}
+
+.link:nth-last-child(2) {
+  background-color: #191c24;
+}
+
+a {
+  width: 100%;
+  height: 100%;
+}
+
+
+
+/*стилизуем менюшку*/
+
+.hidden-menu {
+  margin: 0;
+  height: 100%;
+  top: 0;
+  transition: left .2s;
+  z-index: 2;
+  backface-visibility: hidden;
+}
+
+.hidden-menu .link span {
+  text-decoration: none;
+  color: #cacaca;
+}
+
+.hidden-menu .link span:hover {
+  color: #fff;
+}
+
+/*скрываем инпут чекбокс*/
+
+.hidden-menu-ticker {
+  display: none;
+}
+
+/*общие стили значка-гамбургера, самого лэйбла*/
+
+.btn-menu {
+  color: #fff;
+  padding: 2px;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  cursor: pointer;
+  transition: left .23s;
+  z-index: 3;
+  width: 30px;
+  backface-visibility: hidden;
+}
+
+/*общие стили полосок*/
+
+.btn-menu span {
+  display: none;
+  height: 5px;
+  background-color: white;
+  margin: 6px 0 0;
+  transition: all .1s linear .23s;
+  position: relative;
+}
+
+/*прибиваем к верху лэйбла первую полоску*/
+
+.btn-menu span.first {
+  margin-top: 0;
+}
+
+/*при нажатии на бургер двигаем его и делаем другой фон бургеру*/
+
+.hidden-menu-ticker:checked~.btn-menu {
+  left: 260px;
+  background-color: #2b343c;
+  position: fixed;
+}
+
+/*и дальше стили меняющие бургер, двигающие менюшку по событию - нажатие на значек бургера*/
+
+.hidden-menu-ticker:checked~.hidden-menu {
+  left: 0;
+}
+
+.hidden-menu-ticker:checked~.btn-menu span.first {
+  transform: rotate(45deg);
+  top: 14px;
+  background-color: #fff;
+}
+
+.hidden-menu-ticker:checked~.btn-menu span.second {
+  opacity: 0;
+}
+
+.hidden-menu-ticker:checked~.btn-menu span.third {
+  transform: rotate(-45deg);
+  top: -7px;
+  background-color: #fff;
+}
+
+@media (max-width: 1000px) {
+  .btn-menu span{
+    display: block;
+  }
+  .menu{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+  }
+  .hidden-menu {
+    position: fixed;
+    box-sizing: border-box;
+    width: 300px;
+    background-color: #2b343c;
+    padding: 10px;
+    left: -300px;
+    
+  }
+
+  .link{
+    height: calc(60%/5)
+  }
+}
+
+@media (max-width: 705px){
+  .btn-menu span {
+    background-color: #373a47;
+  }
+}
