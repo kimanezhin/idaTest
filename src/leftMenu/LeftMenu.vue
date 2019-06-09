@@ -57,8 +57,11 @@ export default {
     index: "link0"
   }),
   methods: {
+    /**
+     * Changes tab based on an index
+     * @param {String}
+     */
     changeTab(index) {
-      console.log(index);
       localStorage.setItem("currentTab", index);
 
       document.getElementsByName(index)[0].classList.add("current_link");
@@ -78,6 +81,10 @@ export default {
         }
       }
     },
+    /**
+     * Validator to color the current link in gray
+     * @param {Number}
+     */
     isThisLink(index) {
       return index === localStorage.getItem("currentTab");
     }

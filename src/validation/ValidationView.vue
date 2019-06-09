@@ -118,7 +118,6 @@ export default {
      */
     cardNumber: {
       get() {
-        console.log(this.cardGetter);
         return this.cardGetter;
       },
       set(newValue) {
@@ -160,7 +159,6 @@ export default {
         return this.nameGetter;
       },
       set(newValue) {
-        console.log(newValue);
         this.setName(newValue);
       }
     },
@@ -224,11 +222,6 @@ export default {
      * @returns {Boolean} returns true, if name is valid
      */
     isNameValid() {
-      console.log(
-        this.nameRegex.test(this.holderName),
-        this.holderName.length > 4,
-        this.holderName
-      );
       return (
         this.nameRegex.test(this.holderName) && this.holderName.length >= 4
       );
@@ -340,7 +333,6 @@ export default {
      * @returns {Boolean} return true if all fields are valid
      */
     validate(event) {
-      console.log("a");
       let value = event.target.value;
       let name = event.target.name;
       value = value.replace(/\s/g, "");

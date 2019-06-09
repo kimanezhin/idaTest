@@ -18,7 +18,133 @@ const state = {
         account: '1345 0943 4662 2462',
         summ: '567',
         date: '10.11.2008'
-    }],
+    },{ // Array with mock data
+        account: '1234 5678 9102 5234',
+        summ: '123',
+        date: '12.01.2018'
+    },
+    {
+        account: '1345 0943 4662 2462',
+        summ: '567',
+        date: '10.11.2008'
+    },{ // Array with mock data
+        account: '1234 5678 9102 5234',
+        summ: '123',
+        date: '12.01.2018'
+    },
+    {
+        account: '1345 0943 4662 2462',
+        summ: '567',
+        date: '10.11.2008'
+    },{ // Array with mock data
+        account: '1234 5678 9102 5234',
+        summ: '123',
+        date: '12.01.2018'
+    },
+    {
+        account: '1345 0943 4662 2462',
+        summ: '567',
+        date: '10.11.2008'
+    },{ // Array with mock data
+        account: '1234 5678 9102 5234',
+        summ: '123',
+        date: '12.01.2018'
+    },
+    {
+        account: '1345 0943 4662 2462',
+        summ: '567',
+        date: '10.11.2008'
+    },{ // Array with mock data
+        account: '1234 5678 9102 5234',
+        summ: '123',
+        date: '12.01.2018'
+    },
+    {
+        account: '1345 0943 4662 2462',
+        summ: '567',
+        date: '10.11.2008'
+    },{ // Array with mock data
+        account: '1234 5678 9102 5234',
+        summ: '123',
+        date: '12.01.2018'
+    },
+    {
+        account: '1345 0943 4662 2462',
+        summ: '567',
+        date: '10.11.2008'
+    },{ // Array with mock data
+        account: '1234 5678 9102 5234',
+        summ: '123',
+        date: '12.01.2018'
+    },
+    {
+        account: '1345 0943 4662 2462',
+        summ: '567',
+        date: '10.11.2008'
+    },{ // Array with mock data
+        account: '1234 5678 9102 5234',
+        summ: '123',
+        date: '12.01.2018'
+    },
+    {
+        account: '1345 0943 4662 2462',
+        summ: '567',
+        date: '10.11.2008'
+    },{ // Array with mock data
+        account: '1234 5678 9102 5234',
+        summ: '123',
+        date: '12.01.2018'
+    },
+    {
+        account: '1345 0943 4662 2462',
+        summ: '567',
+        date: '10.11.2008'
+    },{ // Array with mock data
+        account: '1234 5678 9102 5234',
+        summ: '123',
+        date: '12.01.2018'
+    },
+    {
+        account: '1345 0943 4662 2462',
+        summ: '567',
+        date: '10.11.2008'
+    },{ // Array with mock data
+        account: '1234 5678 9102 5234',
+        summ: '123',
+        date: '12.01.2018'
+    },
+    {
+        account: '1345 0943 4662 2462',
+        summ: '567',
+        date: '10.11.2008'
+    },{ // Array with mock data
+        account: '1234 5678 9102 5234',
+        summ: '123',
+        date: '12.01.2018'
+    },
+    {
+        account: '1345 0943 4662 2462',
+        summ: '567',
+        date: '10.11.2008'
+    },{ // Array with mock data
+        account: '1234 5678 9102 5234',
+        summ: '123',
+        date: '12.01.2018'
+    },
+    {
+        account: '1345 0943 4662 2462',
+        summ: '567',
+        date: '10.11.2008'
+    },{ // Array with mock data
+        account: '1234 5678 9102 5234',
+        summ: '123',
+        date: '12.01.2018'
+    },
+    {
+        account: '1345 0943 4662 2462',
+        summ: '567',
+        date: '10.11.2008'
+    },],
     summ: 100,
     accountNumber: '1123341123',
     date: ''
@@ -78,7 +204,6 @@ const mutations = {
         context.date = formatted_date;
     },
     clearData(context){
-        console.log('a')
         context.cardArray = ['', '', '', '',]
         context.cardHolderName = ''
         context.cvv = '',
