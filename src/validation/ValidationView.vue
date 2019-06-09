@@ -36,6 +36,7 @@
                     @keydown.left="goLeft"
                     @keydown.right="goRight($event.target.name)"
                     :name="index-1"
+                    required
                     type="text"
                     class="number_input_box"
                   >
@@ -49,6 +50,7 @@
                     class="card_holder_name_input"
                     placeholder="Держатель карты"
                     autocomplete="on"
+                    required
                   >
                 </div>
               </div>
@@ -64,7 +66,13 @@
               </div>
             </div>
           </form>
-          <input type="Submit" value="Оплатить" @click="highlightErrors" class="send_button">
+          <input
+            type="Submit"
+            value="Оплатить"
+            @click="highlightErrors"
+            class="send_button"
+            required
+          >
         </div>
 
         <div class="alertMessage">

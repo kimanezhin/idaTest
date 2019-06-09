@@ -33,7 +33,7 @@
 
 <style>
 select {
-  width: 55px;
+  width: 60px;
   height: 30px;
   margin-top: 3px;;
 }

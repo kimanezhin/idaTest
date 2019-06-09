@@ -107,12 +107,15 @@ body {
   flex-direction: row;
 }
 
-.number_input>input {
+.number_input>input{
   width: 55px;
   height: 30px;
-  border: 2px solid #e4e9ee;
   margin-top: 5px;
   
+}
+
+.number_input>input, select {
+  border: 2px solid #e4e9ee;
 }
 
 .card_holder_name {
