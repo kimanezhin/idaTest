@@ -374,6 +374,9 @@ export default {
           .classList.remove("alertMessageDown");
       }, 3000);
     }
+  },
+  created(){
+     localStorage.setItem("currentTab", 'link0');
   }
 };
 </script>
