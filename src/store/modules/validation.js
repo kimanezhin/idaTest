@@ -150,9 +150,13 @@ const actions = {
         let date = new Date();
         context.commit('setDate', date);
         let obj = {
-            // account: context.state.cardArray.reduce((A, I) => {
+            // Case when account number == card number
+
+            // account: context.state.cardArray.reduce((A, I) => { 
             //     return A += " " + I;
             // }),
+
+            //Case when account number != card number
             account: context.state.accountNumber,
             summ: context.state.summ,
             date: context.state.date,
