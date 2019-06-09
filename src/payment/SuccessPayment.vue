@@ -16,7 +16,7 @@
               <div class="summ">Сумма: {{summ}} руб.</div>
               <div class="date">Дата: {{getDate}}</div>
             </div>
-            <div class="return_link">Вернуться в магазин</div>
+            <div @click="goBack" class="return_link">Вернуться в магазин</div>
           </div>
         </div>
 
@@ -52,6 +52,11 @@ export default {
     },
     getName(){
       return this.$store.getters.cardHolderNameGetter;
+    }
+  },
+  methods: {
+    goBack(){
+      this.$router.push('/')
     }
   },
   beforeDestroy(){
@@ -107,5 +112,13 @@ export default {
 
 hr {
   width: 20%;
+}
+
+@media(max-width: 650px)
+{
+  .requisites{
+    margin-left: 5%;
+    width: 90%;
+  }
 }
 </style>

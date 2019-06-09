@@ -77,7 +77,8 @@ const mutations = {
             + payload.getFullYear()
         context.date = formatted_date;
     },
-    clearData(){
+    clearData(context){
+        console.log('a')
         context.cardArray = ['', '', '', '',]
         context.cardHolderName = ''
         context.cvv = '',
@@ -121,7 +122,7 @@ const actions = {
         return new Promise((resolve, reject) => {
             context.state.paymentsArray.push(obj)
             context.state.isFormSend = true;
-            reject(); // Try to set here reject();
+            resolve(); // Try to set here reject();
         })
     },
     clearData(context){
