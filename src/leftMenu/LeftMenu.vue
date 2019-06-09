@@ -72,7 +72,7 @@ export default {
       this.index = index;
       switch (index) {
         case "link0": {
-          this.$router.push("/");
+          this.$router.push("/payment");
           break;
         }
         case "link1": {

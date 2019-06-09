@@ -1,6 +1,5 @@
 <template>
-
-  <div class="app">
+  <div class="app" @keydown.enter="goNext">
     <div class="container">
       <div class="menu">
         <LeftMenu/>
@@ -8,18 +7,25 @@
       <div class="view">
         <div class="main">
           <div class="info text-center">
-            <div class="greet">Уважаемый покупатель!</div>
-            <h1>Оплата прошла успешно.</h1>
+            <h1>Перевод на счёт</h1>
             <div class="requisites">
-              <div class="card_number">Номер карты: {{card}}</div>
-              <div class="name">Имя: {{getName}}</div>
-              <div class="summ">Сумма: {{summ}} руб.</div>
-              <div class="date">Дата: {{getDate}}</div>
+              <div class="card_number">
+                <div class="inner_card">Номер счёта</div>
+                <input type="text" v-model="accountNumber" placeholder="Счёт" required>
+              </div>
+              <div class="summ">
+                <div class="inner_card">Сумма</div>
+                <input type="text" v-model="summ" placeholder="Сумма" required>
+              </div>
             </div>
-            <div @click="goBack" class="return_link">Вернуться в магазин</div>
           </div>
+
+          <input @click="goNext" type="Submit" value="Далее" class="send_button">
         </div>
 
+        <div class="alertMessage">
+          <div class="text">Произошла ошибка! Попробуйте еще раз.</div>
+        </div>
         <div class="footer">
           <div class="text">
             <p>Исходя из астатической системы координат Булгакова, соединение стабильно. Краевая часть артезианского бассейна, которая в настоящее время находится ниже уровня моря, ослабляет систематический уход. Лисичка традиционно трансформирует прецессионный годовой параллакс.</p>
@@ -31,72 +37,73 @@
       </div>
     </div>
   </div>
-  
 </template>
 <script>
-
+import { mapGetters, mapActions } from "vuex";
 export default {
-
   computed: {
-    card() {
-      return this.$store.getters.cardNumberGetter.reduce((A, I) => {
-        return (A += "  " + I);
-      });
+    /**
+     * Return number of account to which send
+     * @type {String}
+     */
+    accountNumber: {
+      get() {
+        return this.$store.getters.getAccountNumber;
+      },
+      set(newValue) {
+        this.$store.dispatch("setAccountNumber", newValue);
+      }
     },
-    summ() {
-      return this.$store.getters.getSumm;
-    },
-    account() {
-      return this.$store.getters.getAccountNumber;
-    },
-    getDate() {
-      return this.$store.getters.getDate;
-    },
-    getName(){
-      return this.$store.getters.cardHolderNameGetter;
+
+    /**
+     * Returns summ of current transaction
+     * @type {Number}
+     */
+    summ: {
+      get() {
+        return this.$store.getters.getSumm;
+      },
+      set(newValue) {
+        this.$store.dispatch("setSumm", newValue);
+      }
     }
   },
   methods: {
-    goBack(){
-      this.$router.push('/payment')
-      this.$store.dispatch('clearData');
+      /**
+       * Validates inputs and redirects user to the next page
+       */
+    goNext() {
+      let floatReg = /^\d+(\.\d+)?$/,
+        intReg = /^\d+$/;
+
+      if (floatReg.test(this.summ) && intReg.test(this.accountNumber)) {
+        this.$store.dispatch("setPaymentFlag");
+        this.$router.push("/");
+      } else {
+        this.$store.dispatch("removePaymentFlag");
+      }
     }
   },
-  beforeDestroy(){
-    this.$store.dispatch('clearData');
+  created() {
+    localStorage.setItem("currentTab", "link0");
   }
 };
 </script>
-
-<style>
+<style scoped>
 @import "../styles/mainLayout.css";
-
-
-.greet {
-  font-size: 25px;
+input,
+input:active,
+input:focus {
+  outline: none;
+}
+.send_button {
+  align-self: center;
+}
+.requisites input {
+  width: 50%;
+}
+.requisites input::placeholder {
   font-weight: 500;
-}
-
-.return_link {
-  margin-top: 5%;
-  /* text-decoration: underline; */
-  color: #928f8f;
-}
-
-.return_link:hover {
-  cursor: pointer;
-  text-decoration: underline;
-}
-
-hr {
-  width: 20%;
-}
-
-@media(max-width: 650px)
-{
-  .requisites{
-    margin-left: 5%;
-    width: 90%;
-  }
+  font-family: Arial, Helvetica, sans-serif;
 }
 </style>

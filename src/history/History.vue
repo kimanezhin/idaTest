@@ -64,26 +64,32 @@ export default {
     }
   },
   methods: {
-
     /**
      * Transforms string with summ of payment
      * ex: 9000 -> 9,000
      * @param {Number|String}
      */
     transformMoney(str) {
-      
       str = str + "";
       if (str.length <= 3) return str;
-      return str
+      str = str
         .split("")
         .reverse()
+        .join("");
+      let i = str.indexOf(".");
+      return str
+        .split("")
         .map((x, index) => {
+          if (index < i) return x;
+          if (i != -1) index -= i + 1;
+
           if (index != 0 && index % 3 == 0) x += ",";
           return x;
         })
         .reverse()
         .join("");
     },
+
     /**
      * Sorts data in the history table depends on a param
      * @param {String}
@@ -178,6 +184,24 @@ export default {
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
+}
+
+@media (max-width: 705px) {
+  .history_block {
+    font-size: 15px;
+  }
+  .history_block svg {
+    height: 12px;
+    width: 12px;
+  }
+  .btn-menu span {
+    background-color: white !important;
+  }
+}
+@media (max-width: 480px) {
+  .history_block {
+    font-size: 12px;
+  }
 }
 </style>
 

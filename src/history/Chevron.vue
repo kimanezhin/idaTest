@@ -36,6 +36,9 @@ export default {
     this.parentNode.addEventListener("click", this.rotate);
   },
   methods: {
+    /**
+     * Rotates chevron
+     */
     rotate() {
       if (this.flag) this.domNode.classList.add("svgDown");
       else this.domNode.classList.remove("svgDown");
@@ -43,6 +46,9 @@ export default {
     }
   },
   props: {
+    /**
+     * Class of the parent node of chevron
+     */
     node: {
       type: String,
       default: "Date"

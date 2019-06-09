@@ -6,6 +6,7 @@ const state = {
     cardArray: ['', '', '', '',],
     cardHolderName: '',
     cvv: '',
+    paymentFlag: false,
     isFormSend: false,
     paymentsArray:
         // [], // Array with no data
@@ -50,8 +51,8 @@ const state = {
             id: 7
         },
         ],
-    summ: 100,
-    accountNumber: '1123341123',
+    summ: '',
+    accountNumber: '',
     date: ''
 }
 
@@ -88,6 +89,12 @@ const mutations = {
     setCardNumber(context, payload) {
         context.cardArray[payload.index] = payload.value + "";
     },
+    setPaymentFlag(context) {
+        context.paymentFlag = true;
+    },
+    removePaymentFlag(context) {
+        context.paymentFlag = false;
+    },
 
     setCardHolderName(context, payload) {
         context.cardHolderName = payload;
@@ -114,6 +121,7 @@ const mutations = {
         context.isFormSend = false
         context.summ = 100
         context.accountNumber = '1123341123'
+        context.paymentFlag = false;
     }
 
 }
@@ -142,18 +150,25 @@ const actions = {
         let date = new Date();
         context.commit('setDate', date);
         let obj = {
-            account: context.state.cardArray.reduce((A, I) => {
-                return A += " " + I;
-            }),
+            // account: context.state.cardArray.reduce((A, I) => {
+            //     return A += " " + I;
+            // }),
+            account: context.state.accountNumber,
             summ: context.state.summ,
             date: context.state.date,
-            id:context.state.paymentsArray.length+1
+            id: context.state.paymentsArray.length + 1
         }
         return new Promise((resolve, reject) => {
             context.state.paymentsArray.push(obj)
             context.state.isFormSend = true;
             resolve(); // Try to set here reject();
         })
+    },
+    setPaymentFlag(context) {
+        context.commit('setPaymentFlag')
+    },
+    removePaymentFlag(context) {
+        context.commit('removePaymentFlag')
     },
     clearData(context) {
         context.commit('clearData')
@@ -162,12 +177,15 @@ const actions = {
 }
 
 
-function transform(str){
-    str = str+"";
-    return str.length == 1 ? "0"+str : str;
+function transform(str) {
+    str = str + "";
+    return str.length == 1 ? "0" + str : str;
 }
 export function getFlag() {
     return state.isFormSend;
+}
+export function getPaymentFlag() {
+    return state.paymentFlag;
 }
 
 export default {
