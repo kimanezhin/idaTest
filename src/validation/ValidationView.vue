@@ -1,5 +1,5 @@
 <template>
-  <div class="app">
+  <div class="app" @keydown.enter="highlightErrors">
     <div class="container">
       <div class="menu">
         <LeftMenu/>
@@ -11,23 +11,17 @@
             <div class="payment_data_wrapper">
               <div class="payment_data">
                 <div class="payment_title">Номер счета:</div>
-                <div
-                  @click.stop="falseAccountFlag"
-                  v-if="accountFlag"
-                  class="value"
-                >{{accountNumber}}</div>
-                <input v-model="accountNumber" v-else id="accountTurn" class="value">
+                <div class="value">{{accountNumber}}</div>
               </div>
 
               <div class="payment_data">
                 <div class="payment_title">Сумма платежа:</div>
-                <div @click.stop="falsePaymentFlag" v-if="paymentFlag" class="value">{{summ}} руб.</div>
-                <input v-model="paymentAmount" v-else id="paymentTurn" class="value">
+                <div class="value">{{summ}} руб.</div>
               </div>
             </div>
           </div>
 
-          <div class="card_data">
+          <form class="card_data">
             <div class="data">Данные банковской карты</div>
             <div class="card">
               <div class="card_inner">
@@ -54,6 +48,7 @@
                     type="text"
                     class="card_holder_name_input"
                     placeholder="Держатель карты"
+                    autocomplete="on"
                   >
                 </div>
               </div>
@@ -63,13 +58,13 @@
               <div class="cvv">
                 <div class="payment_title">Код CVV2 / CVC2</div>
                 <div class="cvv_input">
-                  <input v-model="cvvCode" type="password">
+                  <input v-model="cvvCode" type="password" autocomplete="on">
                   <img src="../../img/quest.png" alt>
                 </div>
               </div>
             </div>
-          </div>
-          <button @click="highlightErrors" class="send_button">Оплатить</button>
+          </form>
+          <input type="Submit" value="Оплатить" @click="highlightErrors" class="send_button">
         </div>
 
         <div class="alertMessage">
@@ -184,7 +179,6 @@ export default {
       setSumm: "setSumm",
       setAccuountNumber: "setAccuountNumber"
     }),
-
     /**
      * Sets payment flag to false
      */
@@ -205,7 +199,6 @@ export default {
       if (event.target.id === "accountTurn") this.accountFlag = false;
       else this.accountFlag = true;
     },
-
 
     /**
      * Sets account flag to false
@@ -363,9 +356,9 @@ export default {
      * Shows alert box in case of a bad transaction
      */
     showAlert() {
-      document.getElementsByClassName("alertMessage")[0].classList.add(
-        "alertMessageDown"
-      );
+      document
+        .getElementsByClassName("alertMessage")[0]
+        .classList.add("alertMessageDown");
 
       setTimeout(() => {
         document
@@ -373,12 +366,6 @@ export default {
           .classList.remove("alertMessageDown");
       }, 3000);
     }
-  },
-  mounted() {
-    window.addEventListener("click", this.trueFlag);
-  },
-  beforeDestroy() {
-    window.removeEventListener("click", this.trueFlag);
   }
 };
 </script>

@@ -12,7 +12,7 @@
             <h1>Оплата прошла успешно.</h1>
             <div class="requisites">
               <div class="card_number">Номер карты: {{card}}</div>
-              <div class="name">Имя: {{getName}}:</div>
+              <div class="name">Имя: {{getName}}</div>
               <div class="summ">Сумма: {{summ}} руб.</div>
               <div class="date">Дата: {{getDate}}</div>
             </div>
@@ -34,7 +34,9 @@
   
 </template>
 <script>
+
 export default {
+
   computed: {
     card() {
       return this.$store.getters.cardNumberGetter.reduce((A, I) => {

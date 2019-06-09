@@ -8,19 +8,26 @@
         <div class="main">
           <div class="table_header">
             <div class="history_block">
-              <div class="date">Дата</div>
+              <div @click="sortBy('Date')" class="date">
+                Дата
+                <Chevron class="dateChevron" :node="'date'"/>
+              </div>
+
               <div class="accountNumber">Номер счета</div>
 
-              <div class="summ">Сумма оплаты</div>
+              <div @click="sortBy('Summ')" class="summ">
+                Сумма оплаты
+                <Chevron class="summChevron" :node="'summ'"/>
+              </div>
             </div>
           </div>
 
           <div class="main_history">
             <div v-if="paymentsEmpty" class="no_payments">История переводов пуста.</div>
-            <div v-else v-for="(payment, index) in payments" :key="index" class="history_block">
+            <div v-else v-for="(payment) in payments" :key="payment.id" class="history_block">
               <div class="date">{{payment.date}}</div>
               <div class="accountNumber">{{payment.account}}</div>
-              <div class="summ">{{payment.summ}} руб.</div>
+              <div class="summ">{{transformMoney(payment.summ)}} руб.</div>
             </div>
           </div>
         </div>
@@ -39,7 +46,15 @@
 </template>
 
 <script>
+import Chevron from "./Chevron";
 export default {
+  components: {
+    Chevron
+  },
+  data: () => ({
+    dateOrder: 0,
+    summOrder: 0
+  }),
   computed: {
     payments() {
       return this.$store.getters.getPayments;
@@ -48,13 +63,67 @@ export default {
       return this.payments.length == 0;
     }
   },
-  mounted() {}
+  methods: {
+
+    /**
+     * Transforms string with summ of payment
+     * ex: 9000 -> 9,000
+     * @param {Number|String}
+     */
+    transformMoney(str) {
+      
+      str = str + "";
+      if (str.length <= 3) return str;
+      return str
+        .split("")
+        .reverse()
+        .map((x, index) => {
+          if (index != 0 && index % 3 == 0) x += ",";
+          return x;
+        })
+        .reverse()
+        .join("");
+    },
+    /**
+     * Sorts data in the history table depends on a param
+     * @param {String}
+     */
+    sortBy(type) {
+      switch (type) {
+        case "Date": {
+          this.payments.sort((a, b) => {
+            let first = Date.parse(a.date.split(".").reverse()),
+              second = Date.parse(b.date.split(".").reverse());
+            if (this.summOrder) return first - second;
+            else return second - first;
+          });
+          this.summOrder = !this.summOrder;
+          break;
+        }
+        case "Summ": {
+          this.payments.sort((a, b) => {
+            if (!this.summOrder) {
+              return a.summ - b.summ;
+            } else {
+              return b.summ - a.summ;
+            }
+          });
+          this.summOrder = !this.summOrder;
+          break;
+        }
+      }
+    }
+  }
 };
 </script>
 
 <style scoped>
 @import "../styles/mainLayout.css";
 
+.table_header .date,
+.table_header .summ {
+  cursor: pointer;
+}
 .no_payments {
   margin-right: auto;
   margin-left: auto;
@@ -63,7 +132,7 @@ export default {
   font-family: "Open Sans", sans-serif;
 }
 
-.main_history{
+.main_history {
   height: 100%;
   overflow-y: scroll;
 }

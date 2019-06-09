@@ -7,144 +7,49 @@ const state = {
     cardHolderName: '',
     cvv: '',
     isFormSend: false,
-    paymentsArray: 
-    // [], // Array with no data
-    [{ // Array with mock data
-        account: '1234 5678 9102 5234',
-        summ: '123',
-        date: '12.01.2018'
-    },
-    {
-        account: '1345 0943 4662 2462',
-        summ: '567',
-        date: '10.11.2008'
-    },{ // Array with mock data
-        account: '1234 5678 9102 5234',
-        summ: '123',
-        date: '12.01.2018'
-    },
-    {
-        account: '1345 0943 4662 2462',
-        summ: '567',
-        date: '10.11.2008'
-    },{ // Array with mock data
-        account: '1234 5678 9102 5234',
-        summ: '123',
-        date: '12.01.2018'
-    },
-    {
-        account: '1345 0943 4662 2462',
-        summ: '567',
-        date: '10.11.2008'
-    },{ // Array with mock data
-        account: '1234 5678 9102 5234',
-        summ: '123',
-        date: '12.01.2018'
-    },
-    {
-        account: '1345 0943 4662 2462',
-        summ: '567',
-        date: '10.11.2008'
-    },{ // Array with mock data
-        account: '1234 5678 9102 5234',
-        summ: '123',
-        date: '12.01.2018'
-    },
-    {
-        account: '1345 0943 4662 2462',
-        summ: '567',
-        date: '10.11.2008'
-    },{ // Array with mock data
-        account: '1234 5678 9102 5234',
-        summ: '123',
-        date: '12.01.2018'
-    },
-    {
-        account: '1345 0943 4662 2462',
-        summ: '567',
-        date: '10.11.2008'
-    },{ // Array with mock data
-        account: '1234 5678 9102 5234',
-        summ: '123',
-        date: '12.01.2018'
-    },
-    {
-        account: '1345 0943 4662 2462',
-        summ: '567',
-        date: '10.11.2008'
-    },{ // Array with mock data
-        account: '1234 5678 9102 5234',
-        summ: '123',
-        date: '12.01.2018'
-    },
-    {
-        account: '1345 0943 4662 2462',
-        summ: '567',
-        date: '10.11.2008'
-    },{ // Array with mock data
-        account: '1234 5678 9102 5234',
-        summ: '123',
-        date: '12.01.2018'
-    },
-    {
-        account: '1345 0943 4662 2462',
-        summ: '567',
-        date: '10.11.2008'
-    },{ // Array with mock data
-        account: '1234 5678 9102 5234',
-        summ: '123',
-        date: '12.01.2018'
-    },
-    {
-        account: '1345 0943 4662 2462',
-        summ: '567',
-        date: '10.11.2008'
-    },{ // Array with mock data
-        account: '1234 5678 9102 5234',
-        summ: '123',
-        date: '12.01.2018'
-    },
-    {
-        account: '1345 0943 4662 2462',
-        summ: '567',
-        date: '10.11.2008'
-    },{ // Array with mock data
-        account: '1234 5678 9102 5234',
-        summ: '123',
-        date: '12.01.2018'
-    },
-    {
-        account: '1345 0943 4662 2462',
-        summ: '567',
-        date: '10.11.2008'
-    },{ // Array with mock data
-        account: '1234 5678 9102 5234',
-        summ: '123',
-        date: '12.01.2018'
-    },
-    {
-        account: '1345 0943 4662 2462',
-        summ: '567',
-        date: '10.11.2008'
-    },{ // Array with mock data
-        account: '1234 5678 9102 5234',
-        summ: '123',
-        date: '12.01.2018'
-    },
-    {
-        account: '1345 0943 4662 2462',
-        summ: '567',
-        date: '10.11.2008'
-    },{ // Array with mock data
-        account: '1234 5678 9102 5234',
-        summ: '123',
-        date: '12.01.2018'
-    },
-    {
-        account: '1345 0943 4662 2462',
-        summ: '567',
-        date: '10.11.2008'
-    },],
+    paymentsArray:
+        // [], // Array with no data
+        [{ // Array with mock data
+            account: '1234 5678 9102 5234',
+            summ: '123',
+            date: '10.01.2005',
+            id: 1 // Unique id of a transaction
+        }, {
+            account: '1234 5678 9102 5234',
+            summ: '589',
+            date: '10.11.2008',
+            id: 2
+        }, {
+            account: '1234 5678 9102 5234',
+            summ: '261',
+            date: '21.12.2009',
+            id: 3
+        },
+        {
+            account: '1234 5678 9102 5234',
+            summ: '2135',
+            date: '21.12.2009',
+            id: 4
+        },
+        {
+            account: '1234 5678 9102 5234',
+            summ: '90945',
+            date: '10.10.2001',
+            id: 5
+        },
+        {
+            account: '1234 5678 9102 5234',
+            summ: '948',
+            date: '25.08.2010',
+            id: 6
+        },
+        {
+            account: '1234 5678 9102 5234',
+            summ: '5630',
+            date: '11.12.2019',
+            id: 7
+        },
+        ],
     summ: 100,
     accountNumber: '1123341123',
     date: ''
@@ -197,18 +102,17 @@ const mutations = {
         context.accountNumber = payload;
     },
     setDate(context, payload) {
-
-        let formatted_date = payload.getDate() + "."
-            + (payload.getMonth() + 1) + "."
+        let formatted_date = transform(payload.getDate()) + "."
+            + transform(payload.getMonth() + 1) + "."
             + payload.getFullYear()
         context.date = formatted_date;
     },
-    clearData(context){
+    clearData(context) {
         context.cardArray = ['', '', '', '',]
         context.cardHolderName = ''
-        context.cvv = '',
-        context.isFormSend = false,
-        context.summ = 100,
+        context.cvv = ''
+        context.isFormSend = false
+        context.summ = 100
         context.accountNumber = '1123341123'
     }
 
@@ -242,7 +146,8 @@ const actions = {
                 return A += " " + I;
             }),
             summ: context.state.summ,
-            date: context.state.date
+            date: context.state.date,
+            id:context.state.paymentsArray.length+1
         }
         return new Promise((resolve, reject) => {
             context.state.paymentsArray.push(obj)
@@ -250,12 +155,17 @@ const actions = {
             resolve(); // Try to set here reject();
         })
     },
-    clearData(context){
+    clearData(context) {
         context.commit('clearData')
     }
 
 }
 
+
+function transform(str){
+    str = str+"";
+    return str.length == 1 ? "0"+str : str;
+}
 export function getFlag() {
     return state.isFormSend;
 }
